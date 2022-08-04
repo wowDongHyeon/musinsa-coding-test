@@ -1,12 +1,9 @@
 # musinsa-coding-test
 
 <버전>
-
-  java version : jdk1.8
-
-  tomcat version : 8.0
-
-  postgrsel version : 10
+1. java version : jdk1.8
+2. tomcat version : 8.0
+3. postgrsel version : 10
 
 
 <작업순서>
