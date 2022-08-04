@@ -3,7 +3,9 @@
 <버전>
 
 java version : jdk1.8
+
 tomcat version : 8.0
+
 postgrsel version : 10
 
 
