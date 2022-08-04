@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="musinsa.ranking.api.service.BrandMapper">
+
+	<insert id="add" parameterType="musinsa.ranking.api.service.BrandVo">
+		INSERT INTO  musinsa.brand(
+			brand_name
+		) VALUES (
+			#{brandName}
+		);
+	</insert>
+
+	<update id="edit" parameterType="musinsa.ranking.api.service.BrandVo">
+		UPDATE musinsa.brand SET
+			pkey = #{pkey}
+
+			<if test="brandName != null and brandName != ''">
+				,brand_name = #{brandName}
+			</if>
+
+		WHERE pkey = #{pkey}
+
+	</update>
+
+	<delete id="del" parameterType="musinsa.ranking.api.service.BrandVo">
+		DELETE FROM musinsa.brand WHERE pkey = #{pkey}
+	</delete>
+
+
+</mapper>

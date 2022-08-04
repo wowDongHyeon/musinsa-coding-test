@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="musinsa.ranking.api.service.ProductMapper">
+
+	<select id="getMinPriceProductListByCategoryAndSum" parameterType="HashMap" resultType="HashMap">
+		WITH group_by_category AS(
+  			SELECT category_name   AS "카테고리", MIN(brand_name) AS "브랜드", product_price   AS "가격"
+        	FROM   (
+        				SELECT product.category_name, brand_name, product.product_price
+                		FROM   musinsa.product product
+                        INNER JOIN (SELECT category_name,
+                                           MIN(product_price)
+                                    FROM   musinsa.product
+                                    GROUP  BY category_name) category
+                        ON product.category_name =  category.category_name
+                           AND product.product_price = category.min
+            ) AS  foo
+
+	         GROUP  BY category_name,
+	                   product_price
+	         ORDER  BY category_name
+		)
+		SELECT "카테고리", "브랜드", "가격" FROM   group_by_category
+
+		UNION ALL
+
+		SELECT '총합' AS "카테고리", '총합' AS "브랜드", SUM("가격") AS "가격"
+		FROM   group_by_category
+
+
+	</select>
+
+	<select id="getLowestPriceBrandOfAllCategory" parameterType="HashMap" resultType="HashMap">
+		SELECT brand_name AS "브랜드명", SUM(product_price) AS "가격"
+		FROM   musinsa.product
+
+		GROUP  BY brand_name
+		ORDER  BY "가격" ASC
+
+		LIMIT  1
+
+	</select>
+
+	<select id="getMinPriceProductListByCategory" parameterType="HashMap" resultType="HashMap">
+		SELECT brand_name AS "브랜드명", product.product_price AS "가격"
+		FROM   musinsa.product product
+		       INNER JOIN (SELECT category_name,
+		                          MIN(product_price)
+		                   FROM   musinsa.product
+		                   GROUP  BY category_name) category
+		               ON product.category_name = category.category_name
+		                  AND product.product_price = category.min
+
+		WHERE  product.category_name = #{categoryName}
+
+        ORDER BY product.category_name
+
+        LIMIT 1
+
+	</select>
+
+	<select id="getMaxPriceProductListByCategory" parameterType="HashMap" resultType="HashMap">
+		SELECT brand_name AS "브랜드명", product.product_price AS "가격"
+		FROM   musinsa.product product
+		       INNER JOIN (SELECT category_name,
+		                          MAX(product_price)
+		                   FROM   musinsa.product
+		                   GROUP  BY category_name) category
+		               ON product.category_name = category.category_name
+		                  AND product.product_price = category.max
+
+		WHERE product.category_name = #{categoryName}
+
+        ORDER BY product.category_name
+
+		LIMIT 1
+	</select>
+
+	<insert id="add" parameterType="musinsa.ranking.api.service.ProductVo">
+		INSERT INTO  musinsa.product(
+			brand_name, category_name, product_name, product_price
+		) VALUES (
+			#{brandName}, #{categoryName}, #{productName}, #{productPrice}
+		);
+	</insert>
+
+	<update id="edit" parameterType="musinsa.ranking.api.service.ProductVo">
+		UPDATE musinsa.product SET
+			pkey = #{pkey}
+
+			<if test="productName != null and productName != ''">
+				,product_name = #{productName}
+			</if>
+			<if test="productPrice != null and productPrice != ''">
+				,product_price = #{productPrice}
+			</if>
+
+		WHERE pkey = #{pkey}
+
+	</update>
+
+	<delete id="del" parameterType="musinsa.ranking.api.service.ProductVo">
+		DELETE FROM musinsa.product WHERE pkey = #{pkey}
+	</delete>
+
+</mapper>
