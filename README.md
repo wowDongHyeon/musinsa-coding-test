@@ -6,7 +6,7 @@
 3. postgrsel version : 10
 
 
-<작업순서>
+<구동>
 
 1. IDE에 위 repository 내려받은 후 구동해주세요.
 2. 구동할 때, 제 로컬 DB에 자동으로 연결됩니다.
