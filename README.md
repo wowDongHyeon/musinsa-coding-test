@@ -2,11 +2,11 @@
 
 <버전>
 
-java version : jdk1.8
+  java version : jdk1.8
 
-tomcat version : 8.0
+  tomcat version : 8.0
 
-postgrsel version : 10
+  postgrsel version : 10
 
 
 <작업순서>
