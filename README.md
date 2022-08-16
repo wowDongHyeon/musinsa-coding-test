@@ -1,4 +1,4 @@
-# musinsa-coding-test
+# shopping-api-project
 
 <버전>
 1. java version : jdk1.8
